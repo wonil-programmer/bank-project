@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Home</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <div class="container mt-4">
+      <form id="withdrawalForm" action="/bankbook/withdrawal" method="post">
+        <h4>보낼 계좌</h4>
+        <p></p>
+        <div class="form-group">
+          <input
+            type="number"
+            class="form-control"
+            id="withdrawal_amount"
+            name="withdrawalAmount"
+            required
+          />
+        </div>
+        <p>
+          <label>나에게 표기할 내용 (최대 10 자)</label>
+          <input
+            type="text"
+            class="form-control"
+            name="title"
+            id="title"
+            maxlength="10"
+          />
+        </p>
+        <p></p>
+        <button
+          type="submit"
+          class="btn btn-warning"
+          id="withdrawalBtn"
+          style="float: right"
+          disabled
+        >
+          이체
+        </button>
+      </form>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      $(document).ready(function () {
+        // 1 이상의 수만 허용
+        $("#withdrawal_amount").on("input", function () {
+          var amount = parseInt($(this).val(), 10);
+          if (amount >= 1) {
+            $("#withdrawalBtn").prop("disabled", false);
+          } else {
+            $("#withdrawalBtn").prop("disabled", true);
+          }
+        });
+
+        // 정수 입력만 허용
+        $("#withdrawal_amount").on("keypress", function (e) {
+          if (e.which === 46) {
+            alert("1원 이상의 정수단위의 금액만 입력가능합니다.");
+            e.preventDefault();
+          }
+        });
+
+        // 붙여넣기 방지
+        $("#withdrawal_amount").on("paste", function (e) {
+          alert("붙여넣기를 할 수 없습니다! 직접 입력해주세요.");
+          e.preventDefault();
+        });
+
+        // 우클릭 방지
+        $("#withdrawal_amount").on("contextmenu", function (e) {
+          e.preventDefault();
+        });
+      });
+    </script>
+  </body>
+</html>
