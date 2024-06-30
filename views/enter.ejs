@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Enter Post</title>
+  </head>
+  <body>
+    <%- include('menu.html') %>
+
+    <form action="/post/enter" method="post" class="container mt-4">
+      <div class="mb-3">
+        <label for="title" class="form-label">제목</label>
+        <input type="text" class="form-control" id="title" name="title" required>
+      </div>
+      <div class="mb-3">
+        <label for="content" class="form-label">내용</label>
+        <textarea class="form-control" id="content" name="content" required></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="amount" class="form-label">금액</label>
+        <input type="number" class="form-control" id="amount" name="amount" required>
+      </div>
+      <div class="mb-3">
+        <label for="date" class="form-label">시간</label>
+        <input type="date" class="form-control" id="date" name="date" required>
+      </div>
+      <div class="mb-3">
+        <label for="type" class="form-label">입출금</label>
+        <select class="form-control" id="type" name="type" required>
+          <option value="입금">입금</option>
+          <option value="출금">출금</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">글쓰기</button>
+    </form>
+  </body>
+</html>
