@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const setup = require("../db_setup");
 const sha = require("sha256");
+const fnemail = require('./e_check');
 
 // GET: 회원가입 페이지 요청
 router.get("/account/signup", (req, res) => {
@@ -27,7 +28,7 @@ router.post("/account/check-id", async (req, res) => {
 });
 
 // POST: 회원가입 요청
-router.post("/account/save", async (req, res) => {
+router.post("/account/save", fnemail, async (req, res) => {
   const { mongodb, mysqldb } = await setup();
   const generateSalt = (length = 16) => {
     const crypto = require("crypto");

@@ -8,14 +8,17 @@
   <body>
     <%- include('menu.html') %>
 
-    <table
-      class="table table-hover table-striped text-center container mt-4"
-      style="border: 1px solid"
-    >
+    <div class="container mt-4">
+      <h2>통장 잔액: <%= totalAmount %> 원</h2>
+    </div>
+
+    <table class="table table-hover table-striped text-center container mt-4" style="border: 1px solid">
       <thead>
         <tr>
           <th>제목</th>
-          <th>작성일</th>
+          <th>시간</th>
+          <th>금액</th>
+          <th>입출금</th>
           <th>삭제</th>
         </tr>
       </thead>
@@ -23,20 +26,15 @@
         <% for(let i = 0; i < data.length; i++){ %>
         <tr>
           <td data-bs-toggle="modal" data-bs-target="#myModal">
-            <a
-              href="#"
-              onclick="modal_content(`<%= data[i]._id %>`,`<%= data[i].title %>`,`<%= data[i].content %>`, `<%= data[i].date %>`)"
-              ><%= data[i].title %></a
-            >
+            <a href="#" onclick="modal_content(`<%= data[i]._id %>`,`<%= data[i].title %>`,`<%= data[i].content %>`, `<%= data[i].amount %>`, `<%= data[i].date %>`, `<%= data[i].type %>`)">
+              <%= data[i].title %>
+            </a>
           </td>
           <td><%= data[i].date %></td>
+          <td><%= data[i].amount %></td>
+          <td><%= data[i].type %></td>
           <td>
-            <button
-              class="delete btn btn-outline-danger"
-              data-id="<%= data[i]._id %>"
-            >
-              삭제
-            </button>
+            <button class="delete btn btn-outline-danger" data-id="<%= data[i]._id %>">삭제</button>
           </td>
         </tr>
         <% } %>
@@ -49,35 +47,42 @@
 
     <script>
       $(".enter").click(function () {
-        location.href = "/enter";
+        location.href = "/post/enter";
       });
 
       let modalData;
 
-      function modal_content(_id, title, content, date) {
-        modalData = { _id, title, content, date };
+      function modal_content(_id, title, content, amount, date, type) {
+        modalData = { _id, title, content, amount, date, type };
         $("#postTitle").text(`${modalData.title}`);
         $("#postContent").text(`${modalData.content}`);
+        $("#postAmount").text(`${modalData.amount}`);
         $("#postDate").text(`${modalData.date}`);
+        $("#postType").text(`${modalData.type}`);
         $("#updateSpan").html(
           `<button type="button" class="btn btn-info" onclick="editDisplay()">수정하러가기</button>`
         );
       }
 
       function editDisplay() {
-        //console.log(modalData._id, modalData.title, modalData.content, modalData.date);
         $("#hiddenSpan").html(
-          `<input  type='hidden' value='${modalData._id}' name='_id'>`
+          `<input type='hidden' value='${modalData._id}' name='_id'>`
         );
         $("#postTitle").html(`<input value='${modalData.title}' name='title'>`);
         $("#postContent").html(
           `<textarea name='content'>${modalData.content}</textarea>`
         );
+        $("#postAmount").html(
+          `<input value='${modalData.amount}' name='amount'>`
+        );
         $("#postDate").html(
-          `<input type='date' value='${modalData.date}' name='someDate'>`
+          `<input type='date' value='${modalData.date}' name='date'>`
+        );
+        $("#postType").html(
+          `<input value='${modalData.type}' name='type'>`
         );
         $("#updateSpan").html(
-          `<button type="submit" class="btn btn-warning" >수정</button>`
+          `<button type="submit" class="btn btn-warning">수정</button>`
         );
       }
 
@@ -86,16 +91,13 @@
         let item = $(this);
         $.ajax({
           type: "post",
-          url: "/delete",
+          url: "/post/delete",
           data: { _id: sid },
         })
           .done(function (result) {
-            //응답에 성공했을 때
-            //location.reload();
             item.parent("td").parent("tr").remove();
           })
           .fail(function (xhr, textStatus, errorThrown) {
-            //응답에 실패했을 때
             console.log("게시물 삭제 실패");
             console.log(xhr, textStatus, errorThrown);
           });
@@ -103,7 +105,7 @@
     </script>
 
     <!-- The Modal -->
-    <form action="/update" method="post">
+    <form action="/post/update" method="post">
       <span id="hiddenSpan"></span>
       <div class="modal" id="myModal">
         <div class="modal-dialog">
@@ -112,39 +114,27 @@
             <div class="modal-header">
               제목 :
               <div><h4 class="modal-title" id="postTitle"></h4></div>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-              ></button>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
             <!-- Modal body -->
             <div class="modal-body">
               <div>내용 : <span id="postContent"></span></div>
               <p></p>
+              <div>금액 : <span id="postAmount"></span></div>
+              <p></p>
               <div>작성일 : <span id="postDate"></span></div>
+              <p></p>
+              <div>입출금 : <span id="postType"></span></div>
             </div>
 
             <!-- Modal footer -->
             <div class="modal-footer">
               <span id="updateSpan">
-                <button
-                  type="button"
-                  class="btn btn-info"
-                  onclick="editDisplay()"
-                >
-                  수정하러가기
-                </button>
+                <button type="button" class="btn btn-info" onclick="editDisplay()">수정하러가기</button>
               </span>
 
-              <button
-                type="button"
-                class="btn btn-danger"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
             </div>
           </div>
         </div>

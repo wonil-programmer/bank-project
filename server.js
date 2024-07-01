@@ -22,6 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/", require("./routes/account"));
 app.use("/", require("./routes/bankbook"));
 app.use("/", require("./routes/real-estate"));
+// app.use("/post", require("./routes/post"));
 
 app.get("/", async (req, res) => {
   try {
