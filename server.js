@@ -20,7 +20,8 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/", require("./routes/account"));
-app.use("/", require("./routes/post"));
+app.use("/post", require("./routes/post"));
+
 
 app.get("/", async (req, res) => {
   try {
