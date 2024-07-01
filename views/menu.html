@@ -38,7 +38,10 @@
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/account/signup">회원가입</a>
+          <a class="nav-link" href="/realEstate">부동산</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link signup" href="/account/signup">회원가입</a>
         </li>
       </ul>
     </div>
@@ -62,6 +65,7 @@
   // 쿠키 o => 로그아웃 버튼이 보임
   if (uid) {
     $(".logined").removeClass("disabled");
+    $(".signup").addClass("disabled");
     $("#loginSpan").html(`${uid} <button onclick='logout()'>logout</button>`);
   }
 
