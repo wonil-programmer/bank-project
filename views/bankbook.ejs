@@ -19,16 +19,15 @@
     >
       <tbody>
         <% for(let i = 0; i < data.length; i++){ %>
-        <!-- data 내 data[i].memo는 있을 수도 있고 없을 수도 있음 -->
         <tr>
           <td><%= data[i].date %></td>
           <td data-bs-toggle="modal" data-bs-target="#transactionDetailModal">
-            <a
-              href="#"
+            <div
+              style="cursor: pointer"
               onclick="showTransactionDetailModal('<%= data[i]._id %>', '<%= data[i].title %>', '<%= data[i].memo %>', '<%= data[i].amount %>', '<%= data[i].date %>')"
             >
               <%= data[i].title %>
-            </a>
+            </div>
           </td>
           <td><%= data[i].amount %></td>
         </tr>
@@ -50,7 +49,13 @@
 
         let modalData;
 
-        showTransactionDetailModal = function (_id, title, memo, amount, date) {
+        window.showTransactionDetailModal = (
+          _id,
+          title,
+          memo,
+          amount,
+          date
+        ) => {
           modalData = { _id, title, memo, amount, date };
           $("#title").text(modalData.title);
           $("#memo").html(modalData.memo ? modalData.memo : "메모가 없습니다.");
@@ -63,7 +68,7 @@
           );
         };
 
-        editMemoDisplay = function () {
+        window.editMemoDisplay = () => {
           const currentMemo = modalData.memo ? modalData.memo : "";
           $("#memo").html(`
             <input id="memoInput" class='w-100' value='${currentMemo}' name='memo' maxLength='20' placeholder="메모를 입력하세요 (최대 20자)">
@@ -73,7 +78,7 @@
           $("#editMemo").html(``);
         };
 
-        saveMemo = function () {
+        window.saveMemo = () => {
           const memoContent = $("#memoInput").val();
           $.ajax({
             type: "POST",
@@ -91,7 +96,7 @@
           });
         };
 
-        cancelMemoEdit = function () {
+        window.cancelMemoEdit = () => {
           $("#memo").html(modalData.memo ? modalData.memo : "메모가 없습니다.");
           $("#editMemo").html(`
             <button type="button" class="btn btn-info" onclick="editMemoDisplay()">${
