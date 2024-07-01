@@ -81,7 +81,7 @@ bankbookRouter.post("/bankbook/withdrawal", async (req, res) => {
   // 이체 트랜잭션 데이터 생성
   const transaction = {
     // account_id: ObjectId(account_id),
-    date: new Date(),
+    date: new Date().toISOString().split("T")[0],
     title: title,
     type: "출금",
     amount: -parseInt(withdrawalAmount, 10), // 출금 금액은 음수로 저장
